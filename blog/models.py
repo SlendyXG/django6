@@ -8,6 +8,23 @@ class PostQuerySet(models.QuerySet):
     def year(self, year):
         return self.filter(published_at__year=year).order_by('published_at')
 
+    def popular(self):
+        return self.annotate(likes_count=models.Count('likes')).order_by('-likes_count')
+
+    def fetch_with_comments_count(self):
+        posts = list(self)
+        post_ids = [post.id for post in posts]
+        counts = (
+            self.model.objects
+            .filter(id__in=post_ids)
+            .annotate(comments_count=models.Count('comment'))
+            .values_list('id', 'comments_count')
+        )
+        counts_map = dict(counts)
+        for post in posts:
+            post.comments_count = counts_map.get(post.id, 0)
+        return posts
+
 
 class TagQuerySet(models.QuerySet):
 

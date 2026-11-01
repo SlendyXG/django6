@@ -7,7 +7,6 @@ from blog import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('page/<int:page>', views.index, name='index'),
     path('post/<slug:slug>', views.post_detail, name='post_detail'),
     path('tag/<slug:tag_title>', views.tag_filter, name='tag_filter'),
     path('contacts/', views.contacts, name='contacts'),
@@ -16,6 +15,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns

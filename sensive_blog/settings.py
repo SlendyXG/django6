@@ -1,11 +1,11 @@
 import os
+
 from environs import Env
 
 env = Env()
 env.read_env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
 
@@ -43,7 +43,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 TEMPLATES = [
     {

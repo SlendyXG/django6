@@ -26,7 +26,7 @@ def serialize_tag(tag):
 
 def index(request):
 
-    tags_qs = Tag.objects.annotate(posts_count=Count('posts'))
+    tags_qs = Tag.objects.with_posts_count()
 
     most_popular_posts = (
         Post.objects.popular()
@@ -58,7 +58,7 @@ def index(request):
 
 
 def post_detail(request, slug):
-    tags_qs = Tag.objects.annotate(posts_count=Count('posts'))
+    tags_qs = Tag.objects.with_posts_count()
 
     post = (
         Post.objects
@@ -114,7 +114,7 @@ def post_detail(request, slug):
 
 
 def tag_filter(request, tag_title):
-    tags_qs = Tag.objects.annotate(posts_count=Count('posts'))
+    tags_qs = Tag.objects.with_posts_count()
 
     tag = Tag.objects.get(title=tag_title)
 

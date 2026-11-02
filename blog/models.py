@@ -16,14 +16,14 @@ class PostQuerySet(models.QuerySet):
     def fetch_with_comments_count(self):
         posts = list(self)
         post_ids = [post.id for post in posts]
-        counts = dict(
+        comments_count_by_post_id = dict(
             self.model.objects
             .filter(id__in=post_ids)
             .annotate(comments_count=models.Count('comment'))
             .values_list('id', 'comments_count')
         )
         for post in posts:
-            post.comments_count = counts.get(post.id, 0)
+            post.comments_count = comments_count_by_post_id.get(post.id, 0)
         return posts
 
 
